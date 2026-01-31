@@ -32,4 +32,11 @@ class BoardTest {
             Board().play(-1, Player.X)
         }
     }
+
+    @Test
+    fun `throws exception if index is too large`() {
+        assertFailsWith<IllegalArgumentException> {
+            Board().play(9, Player.X)
+        }
+    }
 }
