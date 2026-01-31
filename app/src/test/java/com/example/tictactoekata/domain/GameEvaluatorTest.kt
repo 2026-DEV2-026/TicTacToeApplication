@@ -14,6 +14,9 @@ class GameEvaluatorTest {
 
         @JvmStatic
         fun provideWinningColumns(): List<List<Int>> = GameEvaluator.WINNING_COLUMNS
+
+        @JvmStatic
+        fun provideWinningDiagonals() : List<List<Int>> = GameEvaluator.WINNING_DIAGONALS
     }
     private val evaluator = GameEvaluator()
 
@@ -40,5 +43,15 @@ class GameEvaluatorTest {
         }
 
         assertEquals(Player.O,evaluator.calculateWinner(board))
+    }
+
+    @ParameterizedTest(name = "X wins on diagonals : {0}")
+    @MethodSource("provideWinningDiagonals")
+    fun `calculates winner on all diagonals`(winningIndices : List<Int>){
+        val board = winningIndices.fold(Board()) { currentBoard, index ->
+            currentBoard.play(index, Player.X)
+        }
+
+        assertEquals(Player.X,evaluator.calculateWinner(board))
     }
 }
