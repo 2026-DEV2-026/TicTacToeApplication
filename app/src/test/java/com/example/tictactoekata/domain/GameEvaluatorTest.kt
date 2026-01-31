@@ -11,6 +11,9 @@ class GameEvaluatorTest {
     companion object{
         @JvmStatic
         fun provideWinningRows() : List<List<Int>> = GameEvaluator.WINNING_ROWS
+
+        @JvmStatic
+        fun provideWinningColumns(): List<List<Int>> = GameEvaluator.WINNING_COLUMNS
     }
     private val evaluator = GameEvaluator()
 
@@ -27,5 +30,15 @@ class GameEvaluatorTest {
         }
 
         assertEquals(Player.X,evaluator.calculateWinner(board))
+    }
+
+    @ParameterizedTest(name = "O wins on column : {0}")
+    @MethodSource("provideWinningColumns")
+    fun `calculates winner on all columns`(winningIndices : List<Int>){
+        val board = winningIndices.fold(Board()) { currentBoard, index ->
+            currentBoard.play(index, Player.O)
+        }
+
+        assertEquals(Player.O,evaluator.calculateWinner(board))
     }
 }
