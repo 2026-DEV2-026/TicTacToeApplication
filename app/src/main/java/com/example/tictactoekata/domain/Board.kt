@@ -20,4 +20,6 @@ data class Board(
         newCells[index] = Cell(player)
         return copy(cells = newCells)
     }
+
+    fun isFull(): Boolean = cells.none { it.isEmpty() }
 }

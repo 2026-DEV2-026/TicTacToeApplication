@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class BoardTest {
@@ -46,5 +47,11 @@ class BoardTest {
             val newBoard = Board().play(0, Player.X)
             newBoard.play(0, Player.O)
         }
+    }
+
+    @Test
+    fun `isFull returns false when board has empty cells`(){
+        val board = Board().play(0, Player.X)
+        assertFalse(board.isFull())
     }
 }
