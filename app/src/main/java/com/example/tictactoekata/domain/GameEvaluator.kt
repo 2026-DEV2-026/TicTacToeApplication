@@ -19,4 +19,8 @@ class GameEvaluator @Inject constructor() {
             }
         }
     }
+
+    fun isDraw(board: Board): Boolean {
+        return board.isFull() && calculateWinner(board) == null
+    }
 }
