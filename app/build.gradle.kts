@@ -41,6 +41,9 @@ android {
     buildFeatures {
         compose = true
     }
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
@@ -62,4 +65,6 @@ dependencies {
     testImplementation(libs.kotlin.test)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.bundles.junit.testing)
 }
