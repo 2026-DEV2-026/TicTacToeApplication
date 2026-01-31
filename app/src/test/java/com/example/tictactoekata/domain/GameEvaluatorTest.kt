@@ -10,9 +10,7 @@ class GameEvaluatorTest {
 
     companion object{
         @JvmStatic
-        fun providingRows() : List<List<Int>> {
-            return GameEvaluator.WINNING_ROWS
-        }
+        fun provideWinningRows() : List<List<Int>> = GameEvaluator.WINNING_ROWS
     }
     private val evaluator = GameEvaluator()
 
@@ -22,7 +20,7 @@ class GameEvaluatorTest {
     }
 
     @ParameterizedTest(name = "X wins on row : {0}")
-    @MethodSource("providingRows")
+    @MethodSource("provideWinningRows")
     fun `calculates winner on all rows`(winningIndices : List<Int>){
         val board = winningIndices.fold(Board()) { currentBoard, index ->
             currentBoard.play(index, Player.X)
