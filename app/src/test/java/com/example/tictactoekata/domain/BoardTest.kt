@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class BoardTest {
@@ -23,5 +24,12 @@ class BoardTest {
 
         assertTrue(originalBoard.get(moveIndex).isEmpty())
         assertEquals(Player.X, newBoard.get(moveIndex).player)
+    }
+
+    @Test
+    fun `throws exception if index is negative`() {
+        assertFailsWith<IllegalArgumentException> {
+            Board().play(-1, Player.X)
+        }
     }
 }
