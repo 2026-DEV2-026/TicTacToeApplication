@@ -54,4 +54,13 @@ class BoardTest {
         val board = Board().play(0, Player.X)
         assertFalse(board.isFull())
     }
+
+    @Test
+    fun `isFull returns true when all cells are taken`() {
+        var board = Board()
+        for (i in 0 until TOTAL_CELLS) {
+            board = board.play(i, Player.X)
+        }
+        assertTrue(board.isFull())
+    }
 }
