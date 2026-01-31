@@ -13,6 +13,9 @@ data class Board(
         require(index in MIN_CELL..MAX_CELL) {
             "Index $index is out of bounds."
         }
+        require(cells[index].isEmpty()) {
+            "Cell $index is already occupied."
+        }
         val newCells = cells.toMutableList()
         newCells[index] = Cell(player)
         return copy(cells = newCells)

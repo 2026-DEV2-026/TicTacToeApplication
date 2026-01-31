@@ -39,4 +39,12 @@ class BoardTest {
             Board().play(9, Player.X)
         }
     }
+
+    @Test
+    fun `throws exception if cell is already occupied`() {
+        assertFailsWith<IllegalArgumentException> {
+            val newBoard = Board().play(0, Player.X)
+            newBoard.play(0, Player.O)
+        }
+    }
 }
