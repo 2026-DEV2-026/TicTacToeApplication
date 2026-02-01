@@ -19,10 +19,13 @@ class GameViewModel @Inject constructor(
 ) : ViewModel() {
     sealed interface GameAction {
         data class SelectCell(val index: Int) : GameAction
+        data object ResetGame : GameAction
     }
     private val _actions = Channel<GameAction>(Channel.UNLIMITED)
 
     fun onCellSelected(index: Int) = _actions.trySend(GameAction.SelectCell(index))
+
+    fun onResetGame() = _actions.trySend(GameAction.ResetGame)
 
     val gameState: StateFlow<TicTacToeState> = _actions.receiveAsFlow()
         .runningFold(TicTacToeState(), ::updateState)
@@ -53,6 +56,9 @@ class GameViewModel @Inject constructor(
                 }.getOrElse { error ->
                     state.copy(errorMessage = error.message)
                 }
+            }
+            is GameAction.ResetGame -> {
+                return TicTacToeState()
             }
         }
     }

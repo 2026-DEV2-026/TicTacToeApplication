@@ -140,4 +140,12 @@ class GameViewModelTest {
         }
 
     }
+
+    @Test
+    fun `reset game clears board and winner`() = runTest {
+        viewModel.gameState.test{
+            viewModel.onResetGame()
+            assertEquals(TicTacToeState(),awaitItem())
+        }
+    }
 }
