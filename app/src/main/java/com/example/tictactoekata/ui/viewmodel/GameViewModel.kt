@@ -18,11 +18,17 @@ class GameViewModel @Inject constructor(
 
     fun onCellSelected(index: Int) {
         val currentState = _gameState.value
-        val newBoard = currentState.board.play(index, currentState.currentPlayer)
+        runCatching {
+            val newBoard = currentState.board.play(index, currentState.currentPlayer)
 
-        _gameState.value = currentState.copy(
-            board = newBoard,
-            currentPlayer = currentState.currentPlayer.next()
-        )
+            _gameState.value = currentState.copy(
+                board = newBoard,
+                currentPlayer = currentState.currentPlayer.next(),
+                errorMessage = null
+            )
+        }.onFailure { error ->
+            _gameState.value = currentState.copy(errorMessage = error.message)
+        }
+
     }
 }
