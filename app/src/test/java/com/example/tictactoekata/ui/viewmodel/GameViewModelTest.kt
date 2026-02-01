@@ -76,4 +76,22 @@ class GameViewModelTest {
             assertEquals(Player.X, errorState.board.get(0).player)
         }
     }
+
+    @Test
+    fun `detects X win and stops game`() = runTest {
+        every { mockEvaluator.calculateWinner(any()) } returns Player.X
+
+        viewModel.gameState.test {
+            awaitItem()
+
+            viewModel.onCellSelected(0)
+
+            val winState = awaitItem()
+
+            assertEquals(Player.X, winState.winner)
+            assertEquals(true, winState.isGameOver)
+
+        }
+
+    }
 }
