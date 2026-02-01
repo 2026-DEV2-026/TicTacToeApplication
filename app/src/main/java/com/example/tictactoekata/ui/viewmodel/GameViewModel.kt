@@ -1,34 +1,58 @@
 package com.example.tictactoekata.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.tictactoekata.domain.GameEvaluator
 import com.example.tictactoekata.ui.TicTacToeState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.runningFold
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class GameViewModel @Inject constructor(
     private val evaluator: GameEvaluator
 ) : ViewModel() {
-    private val _gameState = MutableStateFlow(TicTacToeState())
-    val gameState: StateFlow<TicTacToeState> = _gameState.asStateFlow()
+    sealed interface GameAction {
+        data class SelectCell(val index: Int) : GameAction
+    }
+    private val _actions = Channel<GameAction>(Channel.UNLIMITED)
 
-    fun onCellSelected(index: Int) {
-        val currentState = _gameState.value
-        runCatching {
-            val newBoard = currentState.board.play(index, currentState.currentPlayer)
+    fun onCellSelected(index: Int) = _actions.trySend(GameAction.SelectCell(index))
 
-            _gameState.value = currentState.copy(
-                board = newBoard,
-                currentPlayer = currentState.currentPlayer.next(),
-                errorMessage = null
-            )
-        }.onFailure { error ->
-            _gameState.value = currentState.copy(errorMessage = error.message)
+    val gameState: StateFlow<TicTacToeState> = _actions.receiveAsFlow()
+        .runningFold(TicTacToeState(), ::updateState)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = TicTacToeState()
+        )
+
+    private fun updateState(state: TicTacToeState, action: GameAction): TicTacToeState {
+        return when (action) {
+            is GameAction.SelectCell -> {
+                runCatching {
+                    val newBoard = state.board.play(action.index, state.currentPlayer)
+                    val winner = evaluator.calculateWinner(newBoard)
+                    val isGameOver = winner != null
+                    val currentPlayer = state.currentPlayer.next()
+
+                    state.copy(
+                        board = newBoard,
+                        winner = winner,
+                        currentPlayer = currentPlayer,
+                        isGameOver = isGameOver,
+                        errorMessage = null,
+
+                        )
+                }.getOrElse { error ->
+                    state.copy(errorMessage = error.message)
+                }
+            }
         }
-
     }
 }

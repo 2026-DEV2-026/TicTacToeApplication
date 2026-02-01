@@ -58,12 +58,22 @@ class GameViewModelTest {
 
     @Test
     fun `selecting occupied cells doesn't change state`() = runTest {
-        viewModel.onCellSelected(0)
-        viewModel.onCellSelected(0)
+        every { mockEvaluator.calculateWinner(any()) } returns null
+        every { mockEvaluator.isDraw(any()) } returns false
 
-        val currentState = viewModel.gameState.value
-        assertEquals("Cell 0 is already occupied.", currentState.errorMessage)
-        assertEquals(Player.O, currentState.currentPlayer)
+        viewModel.gameState.test {
+            awaitItem()
+
+            viewModel.onCellSelected(0)
+            val gameStateAfterPlay = awaitItem()
+
+            assertEquals(null, gameStateAfterPlay.errorMessage)
+
+            viewModel.onCellSelected(0)
+            val errorState = awaitItem()
+
+            assertEquals("Cell 0 is already occupied.", errorState.errorMessage)
+            assertEquals(Player.X, errorState.board.get(0).player)
+        }
     }
-
 }
