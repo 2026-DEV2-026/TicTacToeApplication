@@ -11,6 +11,10 @@ composeBom = "2024.09.00"
 hilt = "2.51.1"
 ksp = "2.0.21-1.0.25"
 junitJupiter = "5.10.2"
+coroutines = "1.10.1"
+coroutines-test = "1.10.1"
+turbine = "1.0.0"
+mockk = "1.13.10"
 
 [bundles]
 junit-testing = ["junit-jupiter-api", "junit-jupiter-params"]
@@ -36,6 +40,11 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junitJupiter" }
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junitJupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junitJupiter" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+app-cash-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

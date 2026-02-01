@@ -67,4 +67,11 @@ dependencies {
     ksp(libs.hilt.compiler)
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.bundles.junit.testing)
+    testImplementation(libs.app.cash.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(kotlin("reflect"))
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.kotlinx.coroutines.android)
+
 }
