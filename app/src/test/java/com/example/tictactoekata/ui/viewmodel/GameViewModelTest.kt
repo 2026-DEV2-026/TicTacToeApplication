@@ -94,4 +94,20 @@ class GameViewModelTest {
         }
 
     }
+
+    @Test
+    fun `detects O win and stops game`() = runTest {
+        every { mockEvaluator.calculateWinner(any()) } returns Player.O
+
+        viewModel.gameState.test {
+            awaitItem()
+
+            viewModel.onCellSelected(0)
+
+            val winState = awaitItem()
+
+            assertEquals(Player.O, winState.winner)
+            assertEquals(true, winState.isGameOver)
+        }
+    }
 }
