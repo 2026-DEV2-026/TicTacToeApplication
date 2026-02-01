@@ -40,14 +40,15 @@ class GameViewModel @Inject constructor(
                     val winner = evaluator.calculateWinner(newBoard)
                     val isGameOver = winner != null
                     val currentPlayer = state.currentPlayer.next()
+                    val isDraw = evaluator.isDraw(newBoard)
 
                     state.copy(
                         board = newBoard,
                         winner = winner,
+                        isDraw = isDraw,
                         currentPlayer = currentPlayer,
                         isGameOver = isGameOver,
                         errorMessage = null,
-
                         )
                 }.getOrElse { error ->
                     state.copy(errorMessage = error.message)

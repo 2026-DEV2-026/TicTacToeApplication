@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 class GameViewModelTest {
     private val mockEvaluator = mockk<GameEvaluator>(relaxed = true)
@@ -108,6 +109,20 @@ class GameViewModelTest {
 
             assertEquals(Player.O, winState.winner)
             assertEquals(true, winState.isGameOver)
+        }
+    }
+
+    @Test
+    fun `detects draw`() = runTest {
+        every { mockEvaluator.calculateWinner(any()) } returns null
+        every { mockEvaluator.isDraw(any()) } returns true
+
+        viewModel.gameState.test {
+            awaitItem()
+            viewModel.onCellSelected(8)
+            val state = awaitItem()
+            assertEquals(true, state.isDraw)
+            assertNull(state.winner)
         }
     }
 }
