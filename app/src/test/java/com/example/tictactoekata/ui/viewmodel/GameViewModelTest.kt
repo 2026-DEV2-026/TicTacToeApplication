@@ -125,4 +125,19 @@ class GameViewModelTest {
             assertNull(state.winner)
         }
     }
+
+    @Test
+    fun `can not move after game is won`() = runTest {
+        every { mockEvaluator.calculateWinner(any()) } returns Player.X
+        viewModel.gameState.test {
+            awaitItem()
+
+            viewModel.onCellSelected(0)
+            awaitItem()
+
+            viewModel.onCellSelected(1)
+            expectNoEvents()
+        }
+
+    }
 }
