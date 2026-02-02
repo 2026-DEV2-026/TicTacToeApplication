@@ -19,4 +19,14 @@ class TicTacToeStateTest {
         assertNull(state.errorMessage)
         assertTrue(state.board.cells.all { it.player == null })
     }
+
+    @Test
+    fun `isCellEnabled returns true when cell is empty`() {
+        val state = TicTacToeState()
+        val index = 4
+
+        val isEnabled = state.isCellEnabled(index)
+
+        assertTrue(isEnabled)
+    }
 }
