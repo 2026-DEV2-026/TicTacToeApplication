@@ -32,10 +32,19 @@ class TicTacToeStateTest {
     }
 
     @Test
-    fun `isCellEnabled returns false when cell is occupied`() {
+    fun `isCellEnabled returns false when cell is occupied by X`() {
         val board =  Board().play(0, Player.X)
-        val state = TicTacToeState(board, currentPlayer = Player.O)
+        val state = TicTacToeState(board = board)
         val isEnabled = state.isCellEnabled(0)
+
+        assertFalse(isEnabled)
+    }
+
+    @Test
+    fun `isCellEnabled returns false when cell is occupied by O`() {
+        val board =  Board().play(8, Player.O)
+        val state = TicTacToeState(board = board)
+        val isEnabled = state.isCellEnabled(8)
 
         assertFalse(isEnabled)
     }
