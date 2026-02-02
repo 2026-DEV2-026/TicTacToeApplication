@@ -183,3 +183,36 @@ fun PreviewWinnerX(){
         }
     }
 }
+
+
+@Preview(showBackground = true, name = "O Wins")
+@Composable
+fun PreviewWinnerO(){
+    val winningCells = listOf(
+        Cell(Player.O), Cell(Player.O), Cell(Player.O),
+        Cell(Player.X),Cell(Player.X),Cell(null),
+        Cell(null),Cell(null),Cell(null))
+
+    val wonState = TicTacToeState(
+        board = Board(winningCells),
+        winner = Player.O,
+        isGameOver = true,
+        currentPlayer = Player.X ,
+        isDraw = false
+    )
+
+    TicTacToeKataTheme {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            TicTacToeContent(
+                state = wonState,
+                onCellSelected = {},
+                onResetGame = {}
+            )
+        }
+    }
+}
