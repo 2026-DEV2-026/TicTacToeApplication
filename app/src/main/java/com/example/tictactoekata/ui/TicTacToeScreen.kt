@@ -2,11 +2,11 @@ package com.example.tictactoekata.ui
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tictactoekata.domain.BOARD_SIZE
+import com.example.tictactoekata.domain.Board
+import com.example.tictactoekata.domain.Cell
 import com.example.tictactoekata.domain.Player
 import com.example.tictactoekata.domain.TOTAL_CELLS
 import com.example.tictactoekata.ui.theme.TicTacToeKataTheme
@@ -73,9 +75,9 @@ fun TicTacToeContent(
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.weight(1f))
         Text(
             text = when {
                 state.winner != null -> "Winner: ${state.winner.playerName}"
@@ -117,11 +119,15 @@ fun TicTacToeContent(
                 }
             }
         }
-
-        if (state.isGameOver) {
-            Spacer(modifier = Modifier.height(SpacingForScreen.BoardBottom))
-            Button(onClick = onResetGame) {
-                Text("Play Again")
+        Column(
+            modifier = Modifier.weight(1f).fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (state.isGameOver) {
+                Spacer(modifier = Modifier.height(SpacingForScreen.BoardBottom))
+                Button(onClick = onResetGame) {
+                    Text("Play Again")
+                }
             }
         }
     }
@@ -139,6 +145,38 @@ fun PreviewNewGame(){
         ) {
             TicTacToeContent(
                 state = TicTacToeState(),
+                onCellSelected = {},
+                onResetGame = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "X Wins")
+@Composable
+fun PreviewWinnerX(){
+    val winningCells = listOf(
+        Cell(Player.X), Cell(Player.X), Cell(Player.X),
+        Cell(Player.O),Cell(Player.O),Cell(null),
+        Cell(null),Cell(null),Cell(null))
+
+    val wonState = TicTacToeState(
+        board = Board(winningCells),
+        winner = Player.X,
+        isGameOver = true,
+        currentPlayer = Player.O ,
+        isDraw = false
+    )
+
+    TicTacToeKataTheme{
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            TicTacToeContent(
+                state = wonState,
                 onCellSelected = {},
                 onResetGame = {}
             )
