@@ -1,6 +1,7 @@
 package com.example.tictactoekata.ui
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,12 +48,14 @@ fun TicTacToeScreen(viewModel: GameViewModel = hiltViewModel()) {
     val state by viewModel.gameState.collectAsStateWithLifecycle()
 
     TicTacToeContent(
-    state = state
+    state = state,
+    onCellSelected = viewModel::onCellSelected,
     )
 }
 @Composable
 fun TicTacToeContent(
     state: TicTacToeState,
+    onCellSelected: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -74,7 +77,11 @@ fun TicTacToeContent(
                 Box(
                     modifier = Modifier
                         .size(BoardDimens.CellSize)
-                        .border(BoardDimens.CellBorderWidth, GameColors.CellBorder),
+                        .border(BoardDimens.CellBorderWidth, GameColors.CellBorder)
+                        .clickable(
+                        enabled = state.isCellEnabled(index),
+                onClick = { onCellSelected(index) }
+                ),
                     contentAlignment = Alignment.Center
                 ){
                     if (cell.player != null) {
