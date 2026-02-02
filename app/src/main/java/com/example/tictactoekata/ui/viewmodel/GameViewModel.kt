@@ -21,6 +21,7 @@ class GameViewModel @Inject constructor(
         data class SelectCell(val index: Int) : GameAction
         data object ResetGame : GameAction
     }
+
     private val _actions = Channel<GameAction>(Channel.UNLIMITED)
 
     fun onCellSelected(index: Int) = _actions.trySend(GameAction.SelectCell(index))
@@ -35,31 +36,37 @@ class GameViewModel @Inject constructor(
             initialValue = TicTacToeState()
         )
 
+    private fun selectCell(state: TicTacToeState, index: Int): TicTacToeState {
+        if (state.isGameOver) return state
+
+        return runCatching {
+            val newBoard = state.board.play(index, state.currentPlayer)
+            val winner = evaluator.calculateWinner(newBoard)
+            val isDraw = evaluator.isDraw(newBoard)
+            val isGameOver = winner != null || isDraw
+
+
+            state.copy(
+                board = newBoard,
+                winner = winner,
+                isDraw = isDraw,
+                currentPlayer = if (isGameOver) state.currentPlayer else state.currentPlayer.next(),
+                isGameOver = isGameOver,
+                errorMessage = null,
+            )
+        }.getOrElse { error ->
+            state.copy(errorMessage = error.message)
+        }
+    }
+
     private fun updateState(state: TicTacToeState, action: GameAction): TicTacToeState {
         return when (action) {
-            is GameAction.SelectCell -> {
-                runCatching {
-                    val newBoard = state.board.play(action.index, state.currentPlayer)
-                    val winner = evaluator.calculateWinner(newBoard)
-                    val isGameOver = winner != null
-                    val currentPlayer = state.currentPlayer.next()
-                    val isDraw = evaluator.isDraw(newBoard)
-
-                    state.copy(
-                        board = newBoard,
-                        winner = winner,
-                        isDraw = isDraw,
-                        currentPlayer = currentPlayer,
-                        isGameOver = isGameOver,
-                        errorMessage = null,
-                        )
-                }.getOrElse { error ->
-                    state.copy(errorMessage = error.message)
-                }
-            }
-            is GameAction.ResetGame -> {
-                return TicTacToeState()
-            }
+            is GameAction.ResetGame -> resetGame()
+            is GameAction.SelectCell -> selectCell(state, action.index)
         }
+    }
+
+    private fun resetGame(): TicTacToeState {
+        return TicTacToeState()
     }
 }
