@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,12 +59,14 @@ fun TicTacToeScreen(viewModel: GameViewModel = hiltViewModel()) {
     TicTacToeContent(
     state = state,
     onCellSelected = viewModel::onCellSelected,
+    onResetGame = viewModel::onResetGame
     )
 }
 @Composable
 fun TicTacToeContent(
     state: TicTacToeState,
-    onCellSelected: (Int) -> Unit
+    onCellSelected: (Int) -> Unit,
+    onResetGame: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -109,6 +112,13 @@ fun TicTacToeContent(
                         )
                     }
                 }
+            }
+        }
+
+        if (state.isGameOver) {
+            Spacer(modifier = Modifier.height(SpacingForScreen.BoardBottom))
+            Button(onClick = onResetGame) {
+                Text("Play Again")
             }
         }
     }
