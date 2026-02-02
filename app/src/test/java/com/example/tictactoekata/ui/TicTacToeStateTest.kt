@@ -2,6 +2,9 @@ package com.example.tictactoekata.ui
 
 import com.example.tictactoekata.domain.Board
 import com.example.tictactoekata.domain.Player
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
+import kotlin.intArrayOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -47,5 +50,16 @@ class TicTacToeStateTest {
         val isEnabled = state.isCellEnabled(8)
 
         assertFalse(isEnabled)
+    }
+
+    @ParameterizedTest(name = "Cells on board should be disabled")
+    @ValueSource(ints = [0,1,2,3,4,5,6,7,8])
+    fun `isCellEnabled returns false when game is over`(cellIndex : Int) {
+        val state = TicTacToeState(
+            winner = Player.X,
+            isGameOver = true
+        )
+
+        assertFalse(state.isCellEnabled(cellIndex))
     }
 }
