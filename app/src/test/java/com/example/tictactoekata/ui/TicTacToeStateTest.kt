@@ -1,5 +1,6 @@
 package com.example.tictactoekata.ui
 
+import com.example.tictactoekata.domain.Board
 import com.example.tictactoekata.domain.Player
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,5 +29,14 @@ class TicTacToeStateTest {
         val isEnabled = state.isCellEnabled(index)
 
         assertTrue(isEnabled)
+    }
+
+    @Test
+    fun `isCellEnabled returns false when cell is occupied`() {
+        val board =  Board().play(0, Player.X)
+        val state = TicTacToeState(board, currentPlayer = Player.O)
+        val isEnabled = state.isCellEnabled(0)
+
+        assertFalse(isEnabled)
     }
 }
