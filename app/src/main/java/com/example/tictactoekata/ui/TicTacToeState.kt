@@ -12,6 +12,6 @@ data class TicTacToeState(
     val errorMessage: String? = null,
 ){
     fun isCellEnabled(index: Int): Boolean {
-        return board.cells[index].player == null && !isGameOver
+        return board.cells[index].player == null && !isGameOver && !isDraw
     }
 }

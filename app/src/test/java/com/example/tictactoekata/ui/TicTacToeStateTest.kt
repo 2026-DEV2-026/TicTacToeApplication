@@ -62,4 +62,16 @@ class TicTacToeStateTest {
 
         assertFalse(state.isCellEnabled(cellIndex))
     }
+
+    @ParameterizedTest(name = "Cells on board should be disabled")
+    @ValueSource(ints = [0,1,2,3,4,5,6,7,8])
+    fun `isCellEnabled returns false when game is draw`(cellIndex: Int) {
+        val state = TicTacToeState(
+            winner = null,
+            isGameOver = true,
+            isDraw = true
+        )
+
+        assertFalse(state.isCellEnabled(cellIndex))
+    }
 }
