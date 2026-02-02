@@ -1,15 +1,8 @@
 package com.example.tictactoekata.ui
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Button
@@ -210,6 +203,37 @@ fun PreviewWinnerO(){
         ) {
             TicTacToeContent(
                 state = wonState,
+                onCellSelected = {},
+                onResetGame = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Draw")
+@Composable
+fun PreviewDraw(){
+    val drawCells = listOf(
+        Cell(Player.X), Cell(Player.O), Cell(Player.X),
+        Cell(Player.X),Cell(Player.O),Cell(Player.O),
+        Cell(Player.O),Cell(Player.X),Cell(Player.X))
+
+    val drawState = TicTacToeState(
+        board = Board(drawCells),
+        winner = null,
+        isGameOver = true,
+        isDraw = true
+    )
+
+    TicTacToeKataTheme() {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            TicTacToeContent(
+                state = drawState,
                 onCellSelected = {},
                 onResetGame = {}
             )
