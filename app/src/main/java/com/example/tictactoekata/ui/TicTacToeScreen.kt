@@ -5,10 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,6 +27,11 @@ import com.example.tictactoekata.domain.Player
 import com.example.tictactoekata.domain.TOTAL_CELLS
 import com.example.tictactoekata.ui.viewmodel.GameViewModel
 
+private object SpacingForScreen {
+    val TitleBottom = 32.dp
+    val BoardBottom = 24.dp
+    val ErrorTop = 16.dp
+}
 private object BoardDimens {
     val Size = 300.dp
     val BorderWidth = 2.dp
@@ -62,7 +70,16 @@ fun TicTacToeContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = when {
+                state.winner != null -> "Winner: ${state.winner.playerName}"
+                state.isDraw -> "It's a Draw!"
+                else -> "${state.currentPlayer.playerName}'s Turn"
+            },
+            style = MaterialTheme.typography.headlineMedium
+        )
 
+        Spacer(modifier = Modifier.height(SpacingForScreen.TitleBottom))
         LazyVerticalGrid(
             columns = GridCells.Fixed(
                 BOARD_SIZE
