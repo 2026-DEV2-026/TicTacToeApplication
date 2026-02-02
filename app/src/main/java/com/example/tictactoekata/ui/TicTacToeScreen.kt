@@ -8,17 +8,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,12 +29,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tictactoekata.domain.BOARD_SIZE
 import com.example.tictactoekata.domain.Player
 import com.example.tictactoekata.domain.TOTAL_CELLS
+import com.example.tictactoekata.ui.theme.TicTacToeKataTheme
 import com.example.tictactoekata.ui.viewmodel.GameViewModel
 
 private object SpacingForScreen {
     val TitleBottom = 32.dp
     val BoardBottom = 24.dp
-    val ErrorTop = 16.dp
 }
 private object BoardDimens {
     val Size = 300.dp
@@ -120,6 +123,25 @@ fun TicTacToeContent(
             Button(onClick = onResetGame) {
                 Text("Play Again")
             }
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "New Game")
+@Composable
+fun PreviewNewGame(){
+    TicTacToeKataTheme() {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .safeDrawingPadding(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            TicTacToeContent(
+                state = TicTacToeState(),
+                onCellSelected = {},
+                onResetGame = {}
+            )
         }
     }
 }
