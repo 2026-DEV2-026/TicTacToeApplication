@@ -15,6 +15,7 @@ coroutines = "1.10.1"
 coroutines-test = "1.10.1"
 turbine = "1.0.0"
 mockk = "1.13.10"
+hiltNavigationCompose = "1.2.0"
 
 [bundles]
 junit-testing = ["junit-jupiter-api", "junit-jupiter-params"]
@@ -45,6 +46,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 app-cash-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
