@@ -87,8 +87,6 @@ The project follows a Clean Architecture pattern to ensure the code is modular, 
 **1. Domain Layer**
 Contains the core business logic and entities.
 
-TicTacToeState: Data class representing the current game state.
-
 GameEvaluator: Logic for determining winners or draw conditions.
 
 Board: Immutable representation of the 3x3 grid.
@@ -100,6 +98,8 @@ TicTacToeViewModel: Manages UI state using Kotlin Flows and handles user intent.
 
 TicTacToeScreen: Declarative UI components built with Compose.
 
+TicTacToeState: Data class representing the current game state.
+
 **3. DI Layer**
 Hilt modules provide dependencies across the application, ensuring a decoupled design.
 
@@ -110,8 +110,7 @@ app/src/main/java/com/example/tictactoekata/
 │   ├── Board.kt               # 3x3 Grid management & move validation
 │   ├── Cell.kt                # Atomic unit representing a board space
 │   ├── GameEvaluator.kt       # Logic for winner and draw detection
-│   ├── Player.kt              # Enum for X and O players
-│   └── TicTacToeConstants.kt  # Board size and cell constraints
+│   └── Player.kt              # Enum for X and O players
 │  
 ├── 📂 ui/                     # Presentation Layer (Jetpack Compose)
 │   ├── 📂 theme/              # Material3 color, type, and shape definitions
